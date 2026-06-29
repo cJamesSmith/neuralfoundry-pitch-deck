@@ -1067,6 +1067,23 @@ p {
     z-index: 3;
 }
 
+.thanks-note {
+    position: absolute;
+    left: 96px;
+    bottom: 72px;
+    width: 760px;
+    z-index: 3;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.45;
+    letter-spacing: .06em;
+    color: var(--cream-dim);
+}
+
+.thanks-note b {
+    color: var(--signal);
+}
+
 /* === NAVIGATION CONTROLS === */
 .deck-controls {
     display: flex;
@@ -1336,6 +1353,7 @@ p {
         <h2 class="big-title" data-editable>Help us make AI work accountable.</h2>
     </div>
     <p class="closing-line body-large reveal-left delay-2" data-editable>We are raising a seed round to ship the first governed agent-ops platform for enterprise workflows.</p>
+    <p class="thanks-note reveal-left delay-3" data-editable><b>Thanks:</b> Claude Code, GPT-5.5, and the current skill authors and project maintainers.</p>
     <div class="ask-panel glass-panel reveal-right delay-3">
         <div class="panel-grid"></div>
         <div class="ask-panel-inner">

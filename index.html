@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuralFoundry AI Startup Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* === THEME VARIABLES === */
+:root {
+    --stage-bg: #050806;
+    --slide-bg: #07100e;
+    --ink: #06100d;
+    --cream: #f3efdf;
+    --cream-soft: rgba(243,239,223,.72);
+    --cream-dim: rgba(243,239,223,.46);
+    --signal: #b7ff4a;
+    --signal-soft: rgba(183,255,74,.22);
+    --cyan: #67f1ff;
+    --cyan-soft: rgba(103,241,255,.18);
+    --coral: #ff6f4e;
+    --coral-soft: rgba(255,111,78,.18);
+    --panel: rgba(6,16,13,.66);
+    --panel-strong: rgba(6,16,13,.88);
+    --line: rgba(243,239,223,.22);
+    --line-soft: rgba(243,239,223,.12);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --font-display: 'Chivo', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+}
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* === GLOBAL RESET === */
+* {
+    box-sizing: border-box;
+}
+
+/* === SLIDE FOUNDATION === */
+body {
+    font-family: var(--font-display);
+}
+
+.slide {
+    font-family: var(--font-display);
+    color: var(--cream);
+    background:
+        radial-gradient(circle at 75% 38%, var(--cyan-soft) 0 12%, transparent 34%),
+        radial-gradient(circle at 22% 72%, var(--signal-soft) 0 10%, transparent 34%),
+        radial-gradient(circle at 48% 24%, rgba(255,111,78,.08) 0 8%, transparent 29%),
+        linear-gradient(135deg, #07100e 0%, #0b1511 46%, #060807 100%);
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(90deg, rgba(243,239,223,.055) 1px, transparent 1px),
+        linear-gradient(rgba(243,239,223,.055) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(circle at 52% 50%, black 0 48%, transparent 76%);
+    opacity: .7;
+}
+
+.slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: .12;
+    background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.16) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 7px);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+
+/* === SHARED TYPOGRAPHY === */
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+.kicker {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--signal);
+}
+
+.big-title {
+    font-size: 136px;
+    line-height: .86;
+    letter-spacing: -0.084em;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.slide-title {
+    font-size: 112px;
+    line-height: .88;
+    letter-spacing: -0.078em;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.statement {
+    font-size: 58px;
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+    font-weight: 700;
+}
+
+.body-large {
+    font-size: 31px;
+    line-height: 1.34;
+    letter-spacing: -0.018em;
+    color: var(--cream-soft);
+}
+
+.mono-label {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.35;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+}
+
+.lime {
+    color: var(--signal);
+}
+
+.cyan {
+    color: var(--cyan);
+}
+
+.coral {
+    color: var(--coral);
+}
+
+/* === REVEAL ANIMATIONS === */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+    opacity: 0;
+    transition:
+        opacity 760ms var(--ease-out-expo),
+        transform 760ms var(--ease-out-expo),
+        clip-path 960ms var(--ease-out-expo),
+        filter 760ms var(--ease-out-expo);
+}
+
+.reveal {
+    transform: translateY(34px);
+}
+
+.reveal-left {
+    transform: translateX(-44px);
+}
+
+.reveal-right {
+    transform: translateX(44px);
+}
+
+.reveal-scale {
+    transform: scale(.92);
+    filter: blur(8px);
+}
+
+.slide.visible .reveal,
+.slide.visible .reveal-left,
+.slide.visible .reveal-right,
+.slide.visible .reveal-scale {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+}
+
+.slide.visible .delay-1 { transition-delay: 90ms; }
+.slide.visible .delay-2 { transition-delay: 180ms; }
+.slide.visible .delay-3 { transition-delay: 270ms; }
+.slide.visible .delay-4 { transition-delay: 360ms; }
+.slide.visible .delay-5 { transition-delay: 450ms; }
+.slide.visible .delay-6 { transition-delay: 540ms; }
+
+/* === DECK BRAND CHROME === */
+.brand-lockup {
+    position: absolute;
+    left: 92px;
+    top: 76px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: var(--font-mono);
+    font-size: 19px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    z-index: 4;
+}
+
+.brand-mark {
+    width: 54px;
+    height: 54px;
+    border: 2px solid var(--signal);
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 0 34px rgba(183,255,74,.28);
+}
+
+.brand-mark::before,
+.brand-mark::after {
+    content: '';
+    position: absolute;
+    background: var(--signal);
+    border-radius: 50%;
+}
+
+.brand-mark::before {
+    width: 10px;
+    height: 10px;
+    left: 12px;
+    top: 12px;
+    box-shadow: 20px 20px 0 var(--signal), 20px 0 0 var(--cyan), 0 20px 0 var(--coral);
+}
+
+.brand-mark::after {
+    left: 17px;
+    top: 26px;
+    width: 22px;
+    height: 2px;
+    transform: rotate(45deg);
+}
+
+.slide-number {
+    position: absolute;
+    right: 92px;
+    top: 92px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--cream-dim);
+    letter-spacing: .12em;
+    z-index: 4;
+}
+
+/* === SHARED PANELS AND CARDS === */
+.glass-panel {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(90deg, var(--signal), var(--cyan), var(--coral));
+}
+
+.panel-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(90deg, rgba(243,239,223,.045) 1px, transparent 1px),
+        linear-gradient(rgba(243,239,223,.045) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: .55;
+    pointer-events: none;
+}
+
+/* === TITLE SLIDE === */
+.title-slide .topline {
+    position: absolute;
+    top: 92px;
+    right: 98px;
+    display: flex;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--cream-soft);
+    letter-spacing: .08em;
+    z-index: 5;
+}
+
+.chip {
+    border: 1px solid rgba(243,239,223,.26);
+    border-radius: 999px;
+    padding: 14px 22px;
+    background: rgba(6,16,13,.44);
+}
+
+.title-slide .title {
+    position: absolute;
+    left: 92px;
+    top: 250px;
+    width: 1180px;
+    font-size: 146px;
+    line-height: .86;
+    letter-spacing: -0.084em;
+    font-weight: 900;
+    text-transform: uppercase;
+    z-index: 3;
+    clip-path: inset(0 0 100% 0);
+}
+
+.cursor {
+    display: inline-block;
+    width: 32px;
+    height: 104px;
+    margin-left: 18px;
+    background: var(--signal);
+    transform: translateY(16px);
+    animation: blink 900ms steps(1) infinite;
+}
+
+.title-slide .side-panel {
+    position: absolute;
+    right: 92px;
+    top: 250px;
+    width: 455px;
+    height: 610px;
+    z-index: 3;
+}
+
+.node-map {
+    position: absolute;
+    inset: 66px 48px 198px 48px;
+}
+
+.node {
+    position: absolute;
+    width: 74px;
+    height: 74px;
+    border: 2px solid var(--cream);
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 28px rgba(103,241,255,.22);
+}
+
+.node:nth-child(3n+1) { border-color: var(--signal); }
+.node:nth-child(3n+2) { border-color: var(--cyan); }
+.node:nth-child(3n+3) { border-color: var(--coral); }
+
+.trace {
+    position: absolute;
+    height: 2px;
+    background: rgba(243,239,223,.42);
+    transform-origin: left;
+}
+
+.trace.one { left: 74px; top: 54px; width: 172px; transform: rotate(18deg); }
+.trace.two { left: 154px; top: 258px; width: 162px; transform: rotate(-42deg); }
+
+.panel-copy {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    bottom: 44px;
+    font-size: 25px;
+    line-height: 1.28;
+    color: rgba(243,239,223,.78);
+    z-index: 2;
+}
+
+.panel-copy b {
+    display: block;
+    margin-bottom: 18px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--signal);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.title-slide .bottom-strip {
+    position: absolute;
+    left: 92px;
+    bottom: 74px;
+    width: 1180px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    z-index: 3;
+}
+
+.strip-card {
+    border-top: 1px solid rgba(243,239,223,.26);
+    padding-top: 24px;
+    font-family: var(--font-mono);
+}
+
+.strip-card b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 46px;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 12px;
+    letter-spacing: -.04em;
+}
+
+.strip-card span {
+    color: var(--cream-dim);
+    font-size: 15px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+/* === PROBLEM SLIDE === */
+.problem-title {
+    position: absolute;
+    left: 92px;
+    top: 208px;
+    width: 1120px;
+    z-index: 3;
+}
+
+.problem-copy {
+    position: absolute;
+    left: 96px;
+    bottom: 120px;
+    width: 720px;
+    z-index: 3;
+}
+
+.app-chaos {
+    position: absolute;
+    right: 92px;
+    top: 210px;
+    width: 704px;
+    height: 650px;
+    z-index: 3;
+}
+
+.window-card {
+    position: absolute;
+    width: 300px;
+    height: 170px;
+    border: 1px solid var(--line);
+    background: rgba(6,16,13,.82);
+    box-shadow: 18px 22px 0 rgba(0,0,0,.22);
+}
+
+.window-card::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 18px 0 0 var(--signal), 36px 0 0 var(--cyan);
+}
+
+.window-card span {
+    position: absolute;
+    left: 22px;
+    bottom: 22px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--cream-soft);
+}
+
+.window-card.one { left: 40px; top: 12px; }
+.window-card.two { right: 28px; top: 118px; }
+.window-card.three { left: 88px; top: 302px; }
+.window-card.four { right: 76px; bottom: 24px; }
+
+/* === INFLECTION SLIDE === */
+.inflection-center {
+    position: absolute;
+    left: 140px;
+    top: 210px;
+    width: 1640px;
+    z-index: 3;
+}
+
+.inflection-title {
+    width: 1280px;
+}
+
+.timeline {
+    position: absolute;
+    left: 140px;
+    right: 140px;
+    bottom: 158px;
+    height: 230px;
+    z-index: 3;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 102px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cream-dim), var(--signal), var(--cyan));
+}
+
+.timeline-step {
+    position: absolute;
+    top: 0;
+    width: 345px;
+}
+
+.timeline-step:nth-child(2) { left: 0; }
+.timeline-step:nth-child(3) { left: 420px; }
+.timeline-step:nth-child(4) { left: 840px; }
+.timeline-step:nth-child(5) { right: 0; }
+
+.timeline-dot {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 96px;
+    border: 2px solid var(--signal);
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 28px rgba(183,255,74,.24);
+}
+
+.timeline-step h3 {
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -.04em;
+}
+
+.timeline-step p {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--cream-dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* === SOLUTION SLIDE === */
+.solution-layout {
+    position: absolute;
+    left: 92px;
+    right: 92px;
+    top: 180px;
+    bottom: 96px;
+    display: grid;
+    grid-template-columns: 720px 1fr;
+    gap: 78px;
+    z-index: 3;
+}
+
+.solution-copy {
+    padding-top: 62px;
+}
+
+.solution-copy .body-large {
+    margin-top: 46px;
+    width: 630px;
+}
+
+.operator-core {
+    position: relative;
+    min-height: 760px;
+}
+
+.core-circle {
+    position: absolute;
+    left: 206px;
+    top: 92px;
+    width: 520px;
+    height: 520px;
+    border: 2px solid var(--line);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(183,255,74,.22), transparent 45%),
+        rgba(6,16,13,.68);
+    box-shadow: 0 0 80px rgba(103,241,255,.14);
+}
+
+.core-circle::before,
+.core-circle::after {
+    content: '';
+    position: absolute;
+    inset: 76px;
+    border: 1px dashed rgba(243,239,223,.32);
+    border-radius: 50%;
+}
+
+.core-circle::after {
+    inset: 174px;
+    background: var(--signal);
+    border: 0;
+    box-shadow: 0 0 42px rgba(183,255,74,.5);
+}
+
+.capability {
+    position: absolute;
+    width: 300px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    background: rgba(6,16,13,.82);
+}
+
+.capability h3 {
+    font-size: 31px;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin-bottom: 14px;
+}
+
+.capability p {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--cream-dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.capability.one { left: 0; top: 22px; }
+.capability.two { right: 22px; top: 0; }
+.capability.three { left: 34px; bottom: 78px; }
+.capability.four { right: 0; bottom: 118px; }
+
+/* === PRODUCT LOOP SLIDE === */
+.loop-title {
+    position: absolute;
+    left: 92px;
+    top: 186px;
+    width: 870px;
+    z-index: 3;
+}
+
+.loop-stage {
+    position: absolute;
+    left: 94px;
+    right: 94px;
+    bottom: 102px;
+    height: 430px;
+    z-index: 3;
+}
+
+.loop-line {
+    position: absolute;
+    left: 70px;
+    right: 70px;
+    top: 188px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--signal), var(--cyan), var(--coral), var(--signal));
+}
+
+.loop-card {
+    position: absolute;
+    top: 56px;
+    width: 330px;
+    height: 295px;
+    padding: 34px;
+    border: 1px solid var(--line);
+    background: rgba(6,16,13,.82);
+}
+
+.loop-card:nth-child(2) { left: 0; }
+.loop-card:nth-child(3) { left: 458px; }
+.loop-card:nth-child(4) { left: 916px; }
+.loop-card:nth-child(5) { right: 0; }
+
+.loop-card .num {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--signal);
+    letter-spacing: .16em;
+}
+
+.loop-card h3 {
+    margin-top: 42px;
+    font-size: 48px;
+    line-height: .95;
+    letter-spacing: -.052em;
+}
+
+.loop-card p {
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--cream-dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* === WEDGE SLIDE === */
+.wedge-copy {
+    position: absolute;
+    left: 92px;
+    top: 210px;
+    width: 850px;
+    z-index: 3;
+}
+
+.wedge-copy .body-large {
+    margin-top: 46px;
+    width: 690px;
+}
+
+.wedge-stack {
+    position: absolute;
+    right: 92px;
+    top: 184px;
+    width: 690px;
+    height: 748px;
+    z-index: 3;
+}
+
+.wedge-layer {
+    position: absolute;
+    left: 0;
+    width: 620px;
+    height: 132px;
+    border: 1px solid var(--line);
+    background: rgba(6,16,13,.78);
+    padding: 34px 38px;
+    box-shadow: 16px 18px 0 rgba(0,0,0,.18);
+}
+
+.wedge-layer:nth-child(1) { top: 0; border-color: rgba(255,111,78,.55); }
+.wedge-layer:nth-child(2) { top: 152px; left: 24px; border-color: rgba(103,241,255,.55); }
+.wedge-layer:nth-child(3) { top: 304px; left: 48px; border-color: rgba(183,255,74,.55); }
+.wedge-layer:nth-child(4) { top: 456px; left: 72px; }
+
+.wedge-layer h3 {
+    font-size: 39px;
+    line-height: 1;
+    letter-spacing: -.045em;
+}
+
+.wedge-layer p {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+}
+
+/* === MARKET SLIDE === */
+.market-title {
+    position: absolute;
+    left: 92px;
+    top: 194px;
+    width: 910px;
+    z-index: 3;
+}
+
+.market-visual {
+    position: absolute;
+    right: 112px;
+    top: 178px;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    z-index: 3;
+}
+
+.market-visual::before,
+.market-visual::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--line-soft);
+}
+
+.market-visual::before { inset: 92px; }
+.market-visual::after { inset: 202px; background: rgba(183,255,74,.15); box-shadow: 0 0 70px rgba(183,255,74,.18); }
+
+.market-stat {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+}
+
+.market-stat b {
+    display: block;
+    font-size: 138px;
+    line-height: .82;
+    letter-spacing: -.08em;
+    color: var(--signal);
+}
+
+.market-stat span {
+    display: block;
+    margin-top: 24px;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    line-height: 1.35;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--cream-soft);
+}
+
+.market-note {
+    position: absolute;
+    left: 96px;
+    bottom: 122px;
+    width: 640px;
+    z-index: 3;
+}
+
+/* === TRACTION SLIDE === */
+.traction-title {
+    position: absolute;
+    left: 92px;
+    top: 188px;
+    width: 980px;
+    z-index: 3;
+}
+
+.traction-grid {
+    position: absolute;
+    left: 92px;
+    right: 92px;
+    bottom: 112px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    z-index: 3;
+}
+
+.traction-card {
+    min-height: 292px;
+    padding: 42px;
+    border: 1px solid var(--line);
+    background: rgba(6,16,13,.82);
+}
+
+.traction-card b {
+    display: block;
+    font-size: 86px;
+    line-height: .88;
+    letter-spacing: -.074em;
+    color: var(--signal);
+}
+
+.traction-card h3 {
+    margin-top: 36px;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -.044em;
+}
+
+.traction-card p {
+    margin-top: 18px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--cream-dim);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* === ASK SLIDE === */
+.ask-title {
+    position: absolute;
+    left: 92px;
+    top: 204px;
+    width: 1160px;
+    z-index: 3;
+}
+
+.ask-title .big-title {
+    font-size: 128px;
+}
+
+.ask-panel {
+    position: absolute;
+    right: 92px;
+    top: 194px;
+    width: 470px;
+    height: 690px;
+    z-index: 3;
+}
+
+.ask-panel-inner {
+    position: absolute;
+    inset: 56px 44px 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ask-row {
+    border-top: 1px solid var(--line-soft);
+    padding-top: 22px;
+}
+
+.ask-row b {
+    display: block;
+    font-size: 48px;
+    line-height: .95;
+    letter-spacing: -.05em;
+}
+
+.ask-row span {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+}
+
+.closing-line {
+    position: absolute;
+    left: 96px;
+    bottom: 124px;
+    width: 760px;
+    z-index: 3;
+}
+
+/* === NAVIGATION CONTROLS === */
+.deck-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-mono);
+    color: rgba(243,239,223,.74);
+    background: rgba(6,16,13,.7);
+    border: 1px solid rgba(243,239,223,.2);
+    border-radius: 999px;
+    padding: 10px 16px;
+    backdrop-filter: blur(8px);
+}
+
+.nav-button {
+    appearance: none;
+    border: 1px solid rgba(243,239,223,.22);
+    background: rgba(243,239,223,.06);
+    color: var(--cream);
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+}
+
+.progress-track {
+    width: 146px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(243,239,223,.18);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--signal), var(--cyan));
+    transition: width 300ms var(--ease-out-expo);
+}
+
+.slide-counter {
+    min-width: 68px;
+    font-size: 12px;
+    letter-spacing: .12em;
+}
+
+/* === INLINE EDITING CONTROLS === */
+.edit-hotzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 82px;
+    height: 82px;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.edit-toggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    appearance: none;
+    border: 1px solid rgba(243,239,223,.24);
+    background: rgba(6,16,13,.86);
+    color: var(--cream);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .12em;
+    border-radius: 999px;
+    padding: 10px 14px;
+    transition: opacity 260ms ease, color 260ms ease, border-color 260ms ease;
+}
+
+.edit-toggle.show,
+.edit-toggle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.edit-toggle.active {
+    color: var(--signal);
+    border-color: var(--signal);
+}
+
+.editing [data-editable] {
+    outline: 1px dashed rgba(183,255,74,.7);
+    outline-offset: 5px;
+    cursor: text;
+}
+
+.edit-toast {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 10002;
+    opacity: 0;
+    transform: translateY(12px);
+    background: rgba(6,16,13,.86);
+    color: var(--cream);
+    border: 1px solid rgba(183,255,74,.38);
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.edit-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === MOTION KEYFRAMES === */
+@keyframes blink {
+    0%, 48% { opacity: 1; }
+    49%, 100% { opacity: 0; }
+}
+
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+}
+
+.slide.visible .market-visual,
+.slide.visible .core-circle {
+    animation: floatSlow 4.8s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage" aria-label="NeuralFoundry pitch deck">
+<section class="slide title-slide active visible" data-slide-title="Title">
+    <div class="brand-lockup reveal-left"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="topline reveal-right delay-1"><span class="chip" data-editable>Seed Round</span><span class="chip" data-editable>Agent Ops</span></div>
+    <h1 class="title reveal delay-2" data-editable>Give every team an <span class="lime">AI</span> operator<span class="cursor"></span></h1>
+    <div class="side-panel glass-panel reveal-right delay-3">
+        <div class="panel-grid"></div>
+        <div class="node-map">
+            <div class="trace one"></div>
+            <div class="trace two"></div>
+            <div class="node" style="left:8px;top:16px"></div>
+            <div class="node" style="left:206px;top:74px"></div>
+            <div class="node" style="left:92px;top:214px"></div>
+        </div>
+        <p class="panel-copy" data-editable><b>Governed autonomy</b>Agents that know company context, execute across tools, and escalate decisions before risk compounds.</p>
+    </div>
+    <div class="bottom-strip reveal delay-4">
+        <div class="strip-card"><b data-editable>Workflows</b><span data-editable>From prompt to completed task</span></div>
+        <div class="strip-card"><b data-editable>Approvals</b><span data-editable>Human judgment at the edge</span></div>
+        <div class="strip-card"><b data-editable>Memory</b><span data-editable>Context persists across teams</span></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Problem">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">02 / 08</div>
+    <div class="problem-title reveal-left">
+        <div class="kicker" data-editable>Problem</div>
+        <h2 class="slide-title" data-editable>Work now moves faster than teams can coordinate it.</h2>
+    </div>
+    <p class="problem-copy body-large reveal-left delay-2" data-editable>Critical handoffs are trapped across docs, tickets, Slack threads, dashboards, and one-off automations. AI chat helps people think, but it does not reliably finish the work.</p>
+    <div class="app-chaos reveal-scale delay-3">
+        <div class="window-card one"><span data-editable>Inbox backlog</span></div>
+        <div class="window-card two"><span data-editable>Approval thread</span></div>
+        <div class="window-card three"><span data-editable>CRM update</span></div>
+        <div class="window-card four"><span data-editable>Ops runbook</span></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Inflection">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">03 / 08</div>
+    <div class="inflection-center reveal-left">
+        <div class="kicker" data-editable>Inflection</div>
+        <h2 class="slide-title inflection-title" data-editable>AI is shifting from answers to accountable action.</h2>
+    </div>
+    <div class="timeline">
+        <div class="timeline-line reveal delay-1"></div>
+        <div class="timeline-step reveal delay-2"><div class="timeline-dot"></div><h3 data-editable>Search</h3><p data-editable>Find information faster</p></div>
+        <div class="timeline-step reveal delay-3"><div class="timeline-dot"></div><h3 data-editable>Chat</h3><p data-editable>Generate and reason</p></div>
+        <div class="timeline-step reveal delay-4"><div class="timeline-dot"></div><h3 data-editable>Agents</h3><p data-editable>Execute workflows</p></div>
+        <div class="timeline-step reveal delay-5"><div class="timeline-dot"></div><h3 data-editable>Governance</h3><p data-editable>Control at scale</p></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Solution">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">04 / 08</div>
+    <div class="solution-layout">
+        <div class="solution-copy reveal-left">
+            <div class="kicker" data-editable>Solution</div>
+            <h2 class="slide-title" data-editable>The agent operations layer for enterprise teams.</h2>
+            <p class="body-large delay-2" data-editable>NeuralFoundry connects company context, tool access, workflow memory, and human checkpoints so AI agents can safely complete real business processes.</p>
+        </div>
+        <div class="operator-core reveal-scale delay-2">
+            <div class="core-circle"></div>
+            <div class="capability one"><h3 data-editable>Context</h3><p data-editable>Reads docs, systems, history</p></div>
+            <div class="capability two"><h3 data-editable>Planning</h3><p data-editable>Turns goals into steps</p></div>
+            <div class="capability three"><h3 data-editable>Execution</h3><p data-editable>Acts across existing tools</p></div>
+            <div class="capability four"><h3 data-editable>Control</h3><p data-editable>Escalates when risk rises</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Product Loop">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">05 / 08</div>
+    <div class="loop-title reveal-left">
+        <div class="kicker" data-editable>Product</div>
+        <h2 class="slide-title" data-editable>One loop. Thousands of repeatable workflows.</h2>
+    </div>
+    <div class="loop-stage">
+        <div class="loop-line reveal delay-1"></div>
+        <div class="loop-card reveal delay-2"><div class="num">01</div><h3 data-editable>Observe</h3><p data-editable>Ingest the live operating context</p></div>
+        <div class="loop-card reveal delay-3"><div class="num">02</div><h3 data-editable>Plan</h3><p data-editable>Generate a traceable task path</p></div>
+        <div class="loop-card reveal delay-4"><div class="num">03</div><h3 data-editable>Act</h3><p data-editable>Execute across tools and APIs</p></div>
+        <div class="loop-card reveal delay-5"><div class="num">04</div><h3 data-editable>Escalate</h3><p data-editable>Ask humans at decision points</p></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Wedge">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">06 / 08</div>
+    <div class="wedge-copy reveal-left">
+        <div class="kicker" data-editable>Go-to-market wedge</div>
+        <h2 class="slide-title" data-editable>Start with ops teams drowning in cross-tool work.</h2>
+        <p class="body-large" data-editable>Our first buyers already have runbooks, approvals, and repetitive workflows. We replace manual coordination before expanding into every knowledge-work function.</p>
+    </div>
+    <div class="wedge-stack reveal-right delay-2">
+        <div class="wedge-layer"><h3 data-editable>Customer support ops</h3><p data-editable>Ticket routing, refunds, incident handoffs</p></div>
+        <div class="wedge-layer"><h3 data-editable>Revenue operations</h3><p data-editable>CRM hygiene, follow-ups, account research</p></div>
+        <div class="wedge-layer"><h3 data-editable>Security operations</h3><p data-editable>Alerts, evidence gathering, approvals</p></div>
+        <div class="wedge-layer"><h3 data-editable>Internal platforms</h3><p data-editable>Provisioning, requests, workflow memory</p></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Market">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">07 / 08</div>
+    <div class="market-title reveal-left">
+        <div class="kicker" data-editable>Market</div>
+        <h2 class="slide-title" data-editable>Every knowledge workflow becomes agentic.</h2>
+    </div>
+    <p class="market-note body-large reveal-left delay-2" data-editable>As AI moves from generation to execution, companies need a control plane for agents the same way they needed identity, observability, and workflow tools for cloud software.</p>
+    <div class="market-visual reveal-scale delay-3">
+        <div class="market-stat"><b data-editable>$300B+</b><span data-editable>Automation, workflow, and knowledge-work software spend</span></div>
+    </div>
+</section>
+
+<section class="slide" data-slide-title="Ask">
+    <div class="brand-lockup"><span class="brand-mark"></span><span data-editable>NeuralFoundry</span></div>
+    <div class="slide-number">08 / 08</div>
+    <div class="ask-title reveal-left">
+        <div class="kicker" data-editable>The ask</div>
+        <h2 class="big-title" data-editable>Help us make AI work accountable.</h2>
+    </div>
+    <p class="closing-line body-large reveal-left delay-2" data-editable>We are raising a seed round to ship the first governed agent-ops platform for enterprise workflows.</p>
+    <div class="ask-panel glass-panel reveal-right delay-3">
+        <div class="panel-grid"></div>
+        <div class="ask-panel-inner">
+            <div class="ask-row"><b data-editable>$3M</b><span data-editable>Seed target placeholder</span></div>
+            <div class="ask-row"><b data-editable>18 mo.</b><span data-editable>Runway to repeatable GTM</span></div>
+            <div class="ask-row"><b data-editable>3 hires</b><span data-editable>AI infra, design partner success, security</span></div>
+            <div class="ask-row"><b data-editable>10 pilots</b><span data-editable>Design partner milestone</span></div>
+        </div>
+    </div>
+</section>
+</main>
+</div>
+
+<nav class="deck-controls" aria-label="Slide navigation">
+    <button class="nav-button" id="prevSlide" aria-label="Previous slide">‹</button>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="slide-counter" id="slideCounter">01 / 08</div>
+    <button class="nav-button" id="nextSlide" aria-label="Next slide">›</button>
+</nav>
+
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">EDIT</button>
+<div class="edit-toast" id="editToast">Saved</div>
+
+<script>
+/* === SLIDE PRESENTATION CONTROLLER === */
+class SlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.stage = document.getElementById('deckStage');
+        this.progressFill = document.getElementById('progressFill');
+        this.slideCounter = document.getElementById('slideCounter');
+        this.wheelLocked = false;
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupButtons();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.showSlide(0);
+    }
+
+    setupStageScale() {
+        const scale = () => {
+            const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * factor) / 2;
+            const y = (window.innerHeight - 1080 * factor) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (event) => {
+            if (event.target && event.target.getAttribute('contenteditable') === 'true') return;
+            if (['ArrowRight', 'PageDown', ' '].includes(event.key)) {
+                event.preventDefault();
+                this.next();
+            }
+            if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+                event.preventDefault();
+                this.prev();
+            }
+            if (event.key === 'Home') this.showSlide(0);
+            if (event.key === 'End') this.showSlide(this.slides.length - 1);
+        });
+    }
+
+    setupButtons() {
+        document.getElementById('prevSlide').addEventListener('click', () => this.prev());
+        document.getElementById('nextSlide').addEventListener('click', () => this.next());
+    }
+
+    setupTouchNav() {
+        window.addEventListener('touchstart', (event) => {
+            this.touchStartX = event.changedTouches[0].screenX;
+            this.touchStartY = event.changedTouches[0].screenY;
+        }, { passive: true });
+        window.addEventListener('touchend', (event) => {
+            const dx = event.changedTouches[0].screenX - this.touchStartX;
+            const dy = event.changedTouches[0].screenY - this.touchStartY;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                dx < 0 ? this.next() : this.prev();
+            }
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        window.addEventListener('wheel', (event) => {
+            if (this.wheelLocked) return;
+            if (Math.abs(event.deltaY) < 28) return;
+            this.wheelLocked = true;
+            event.deltaY > 0 ? this.next() : this.prev();
+            setTimeout(() => { this.wheelLocked = false; }, 520);
+        }, { passive: true });
+    }
+
+    showSlide(index) {
+        this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, slideIndex) => {
+            slide.classList.toggle('active', slideIndex === this.currentSlide);
+            slide.classList.toggle('visible', slideIndex === this.currentSlide);
+        });
+        const current = String(this.currentSlide + 1).padStart(2, '0');
+        const total = String(this.slides.length).padStart(2, '0');
+        this.slideCounter.textContent = `${current} / ${total}`;
+        this.progressFill.style.width = `${((this.currentSlide + 1) / this.slides.length) * 100}%`;
+    }
+
+    next() {
+        this.showSlide(this.currentSlide + 1);
+    }
+
+    prev() {
+        this.showSlide(this.currentSlide - 1);
+    }
+}
+
+/* === INLINE EDITING MANAGER === */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.storageKey = `frontend-slides-edits:${location.pathname}`;
+        this.editables = Array.from(document.querySelectorAll('[data-editable]'));
+        this.toggle = document.getElementById('editToggle');
+        this.toast = document.getElementById('editToast');
+        this.load();
+        this.setupControls();
+    }
+
+    setupControls() {
+        this.toggle.addEventListener('click', () => this.toggleEditMode());
+        document.addEventListener('keydown', (event) => {
+            const editingText = event.target && event.target.getAttribute('contenteditable') === 'true';
+            if ((event.key === 'e' || event.key === 'E') && !editingText) {
+                event.preventDefault();
+                this.toggleEditMode();
+            }
+            if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+                this.save();
+            }
+        });
+        this.editables.forEach((element) => {
+            element.addEventListener('input', () => this.save(false));
+        });
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('editing', this.isActive);
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.textContent = this.isActive ? 'EDIT ON' : 'EDIT';
+        this.editables.forEach((element) => {
+            element.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+        });
+        if (!this.isActive) this.save();
+    }
+
+    save(showToast = true) {
+        const payload = this.editables.map((element) => element.innerHTML);
+        localStorage.setItem(this.storageKey, JSON.stringify(payload));
+        if (showToast) this.showToast();
+    }
+
+    load() {
+        const raw = localStorage.getItem(this.storageKey);
+        if (!raw) return;
+        try {
+            const payload = JSON.parse(raw);
+            this.editables.forEach((element, index) => {
+                if (typeof payload[index] === 'string') element.innerHTML = payload[index];
+            });
+        } catch (error) {
+            console.warn('Could not load saved slide edits.', error);
+        }
+    }
+
+    showToast() {
+        this.toast.classList.add('show');
+        clearTimeout(this.toastTimer);
+        this.toastTimer = setTimeout(() => this.toast.classList.remove('show'), 1200);
+    }
+}
+
+/* === EDIT HOTZONE BEHAVIOR === */
+function setupEditHotzone(editor) {
+    const hotzone = document.querySelector('.edit-hotzone');
+    const editToggle = document.getElementById('editToggle');
+    let hideTimeout = null;
+    const show = () => {
+        clearTimeout(hideTimeout);
+        editToggle.classList.add('show');
+    };
+    const scheduleHide = () => {
+        hideTimeout = setTimeout(() => {
+            if (!editor.isActive) editToggle.classList.remove('show');
+        }, 400);
+    };
+    hotzone.addEventListener('mouseenter', show);
+    hotzone.addEventListener('mouseleave', scheduleHide);
+    editToggle.addEventListener('mouseenter', show);
+    editToggle.addEventListener('mouseleave', scheduleHide);
+    hotzone.addEventListener('click', () => editor.toggleEditMode());
+}
+
+/* === APPLICATION BOOTSTRAP === */
+const presentation = new SlidePresentation();
+const editor = new InlineEditor();
+setupEditHotzone(editor);
+window.presentation = presentation;
+</script>
+</body>
+</html>
